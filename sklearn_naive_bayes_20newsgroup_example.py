@@ -4403,7 +4403,7 @@ def newsgroup_example():
          3. Use the trained classifiers for the sample's `predicted topic` to predict the category within that topic using the sample's new feature vector
          4. Save the prediction in a new column `predicted category`
         
-        Once the above steps are carried out, each sample in the testing set will now have a ground truth label for `category` and `topic`. Each sample in the testing set will also have a `predicted topic` and `predicted category` label. This pairs of ground truth and predicted labels can be used to create metrics used to judge the performance of the two-step classification method.
+        Once the above steps are carried out, each sample in the testing set will now have a ground truth label for `category` and `topic`. Each sample in the testing set will also have a `predicted topic` and `predicted category` label. These pairs of ground truth and predicted labels can be used to create metrics used to judge the performance of the two-step classification method.
         '''
     )
     
