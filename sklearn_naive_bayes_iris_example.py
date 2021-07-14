@@ -197,8 +197,8 @@ def iris_example():
         The above contains textual representation of the dataset and summary statistics. We can create some visualizations to further explore the data, with the goal to determine if there is any clustering that may hint at how the different classes are differentiated. Usually the first thing we want to see is how each feature is distributed, which means looking at 1D distributions. In the iris dataset, we are fortunate that each feature is measured in the same units, with values falling in similar ranges (see the output of `.describe()` in the above runable code. Taking advantage of this, we can plot the distributions with a single vertical axis. A box or violin plot would nicely show how the data is distributed, and hint at any clustering. In a box plot, the data is divided into quartiles. The box comprises the interquartile range: the range of data that comprises the middle 50% of data samples. The median is shown with a line though the box. Outside the box are extended whiskers. These extend past the upper and lower edges of the box by 150% of the interquartile range. Outside these whiskers are outlier data points. See the following figure from [this article](https://towardsdatascience.com/understanding-boxplots-5e2df7bcbd51).
         '''
     )
-    ol1, col2, col3 = st.beta_columns([1,3,1])
-    with col2:
+    _, col, _ = st.beta_columns([1,3,1])
+    with col:
         st.image('./resources/images/box_plot_diagram.png')
     st.write(
         '''
