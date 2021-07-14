@@ -2,7 +2,7 @@
 Interactive Streamlit app exploring Naive-Bayes classification with sklearn
 
 Find the app deployed on heroku at
-[http://naive-bayes-sklearn.herokuapp.com/].
+[http://naive-bayes-sklearn.herokuapp.com/](http://naive-bayes-sklearn.herokuapp.com/).
 (App may take up a few moments to load)
 
 In this web app, we introduce the ideas behind Naive-Bayes classification, including a thorough mathematical background of all the ideas needed to understand how a Naive-Bayes classifier works.
