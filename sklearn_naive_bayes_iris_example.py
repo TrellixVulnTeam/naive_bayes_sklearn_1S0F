@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 import seaborn as sns
 
@@ -21,11 +22,15 @@ from matrix_heatmap import matrix_heatmap
 # Import custom latex display and numbering class
 from latex_equation_numbering import latex_equation_numbering
 
-# Instantiate the latex_equation_numbering class
-iris_equations = latex_equation_numbering()
+# Load helpers
+from helpers import button_created, button_changed
 
 
 def iris_example():
+
+    # Instantiate the latex_equation_numbering class
+    iris_equations = latex_equation_numbering()
+    
     st.title('Classification with the Iris dataset')
     st.header('Loading the Data')
     st.write(
@@ -44,6 +49,7 @@ def iris_example():
     # ----------------------------------------
     # ----- load Iris dataset code block -----
     # ----------------------------------------
+    run_button_key = 'iris_load_run_button'
     code_col, output_col = st.beta_columns(2)
     with code_col:
         st.subheader('Code:')
@@ -73,8 +79,9 @@ def iris_example():
         )
     with output_col:
         st.subheader('Output:')
-    run_button = st.button('Run Code', key='iris_load_run_button')
-    if run_button:
+    run_button = st.button('Run Code', key=run_button_key, on_click=button_created(run_button_key))
+    if run_button or st.session_state[run_button_key+'_dict']['was_pressed']:
+        st.session_state[run_button_key+'_dict']['was_pressed'] = True
 
         iris = load_iris()
 
@@ -101,7 +108,7 @@ def iris_example():
         From the feature names, we deduce that the `iris` dataset contains numerical features describing the physical characteristics of samples of the _iris_ species. From the target names, we infer three subspecies in the data. Here is an image composition of all three species from [this article](https://towardsdatascience.com/the-iris-dataset-a-little-bit-of-history-and-biology-fb4812f5a7b5). The flower petals and sepals are labeled.
         '''
     )
-    col1, col2, col3 = st.beta_columns([1,3,1])
+    _, col2, _ = st.beta_columns([1,3,1])
     with col2:
         st.image('./resources/images/iris_species.png')
         st.markdown(
@@ -128,6 +135,7 @@ def iris_example():
     # ------------------------------------------------------
     # ----- Iris dataset summary statistics code block -----
     # ------------------------------------------------------
+    run_button_key = 'iris_stats_run_button'
     code_col, output_col = st.beta_columns(2)
     with code_col:
         st.subheader('Code:')
@@ -157,8 +165,9 @@ def iris_example():
         )
     with output_col:
         st.subheader('Output:')
-    run_button = st.button('Run Code', key='iris_stats_run_button')
-    if run_button:
+    run_button = st.button('Run Code', key=run_button_key, on_click=button_created(run_button_key))
+    if run_button or st.session_state[run_button_key+'_dict']['was_pressed']:
+        st.session_state[run_button_key+'_dict']['was_pressed'] = True
 
         iris_df = load_iris(as_frame=True)
 
@@ -211,9 +220,11 @@ def iris_example():
     # ---------------------------------------------
     # ----- 1-D distribution plots code block -----
     # ---------------------------------------------
+    run_button_key = 'iris_1D_run_button'
     code_col, output_col = st.beta_columns(2)
     with code_col:
         st.subheader('Code:')
+        #plottype = st.radio('Select plot type:', options=['Box plot', 'Violin plot'], key='iris_1D_radio_button', on_change=button_changed(run_button_key))
         plottype = st.radio('Select plot type:', options=['Box plot', 'Violin plot'], key='iris_1D_radio_button')
         if plottype == 'Box plot':
             plottype_string = 'boxplot'
@@ -240,8 +251,11 @@ def iris_example():
         )
     with output_col:
         st.subheader('Output:')
-    run_button = st.button('Run Code', key='iris_1D_run_button')
-    if run_button:
+    run_button = st.button('Run Code', key=run_button_key, on_click=button_created(run_button_key))
+
+    #if run_button or (st.session_state[run_button_key+'_dict']['was_pressed'] and not st.session_state[run_button_key+'_dict']['input_changed']):
+    if run_button or st.session_state[run_button_key+'_dict']['was_pressed']:
+        st.session_state[run_button_key+'_dict']['was_pressed'] = True
 
         iris_df = load_iris(as_frame=True)
 
@@ -264,7 +278,8 @@ def iris_example():
 
     # --------------------------------------------------------------
     # ----- 1-D distribution plots split by species code block -----
-    # --------------------------------------------------------------        
+    # --------------------------------------------------------------
+    run_button_key = 'iris_1D_by_species_run_button'        
     code_col, output_col = st.beta_columns(2)
     with code_col:
         st.subheader('Code:')
@@ -321,8 +336,9 @@ def iris_example():
             )
     with output_col:
         st.subheader('Output:')
-    run_button = st.button('Run Code', key='iris_1D_by_species_run_button')
-    if run_button:
+    run_button = st.button('Run Code', key=run_button_key, on_click=button_created(run_button_key))
+    if run_button or st.session_state[run_button_key+'_dict']['was_pressed']:
+        st.session_state[run_button_key+'_dict']['was_pressed'] = True
         
         iris_df = load_iris(as_frame=True)
         iris_df.data['species'] = iris_df.target.replace({0: 'setosa', 
@@ -365,6 +381,7 @@ def iris_example():
     # ---------------------------------------------
     # ----- 2-D distribution plots code block -----
     # ---------------------------------------------
+    run_button_key = 'iris_2D_run_button'
     st.subheader('Plotting options')
     code_options = st.beta_columns(3)
     with code_options[0]:
@@ -424,38 +441,46 @@ def iris_example():
                  
     with output_col:
         st.subheader('Output:')
-    run_button = st.button('Run Code', key='iris_2D_run_button')
-    if run_button:
+    run_button = st.button('Run Code', key=run_button_key, on_click=button_created(run_button_key))
+    if run_button or st.session_state[run_button_key+'_dict']['was_pressed']:
+        st.session_state[run_button_key+'_dict']['was_pressed'] = True
 
         iris_df = load_iris(as_frame=True)
 
-        fig, ax = plt.subplots()
+        @st.cache(hash_funcs={mpl.figure.Figure: lambda _: None, sns.PairGrid: lambda _: None})
+        def make_pairplot(iris_df, diag_type, off_diag_type, kde_overlay):
 
-        if diag_type == 'Histogram':
-            if off_diag_type == 'Scatter':
-                fig = sns.pairplot(data=iris_df.data, diag_kind='hist', kind='scatter', plot_kws={'alpha': 0.5})
-            elif off_diag_type == 'Histogram':
-                fig = sns.pairplot(data=iris_df.data, diag_kind='hist', kind='hist')
-            elif off_diag_type == 'Kernel Density Estimation':
-                fig = sns.pairplot(data=iris_df.data, diag_kind='hist', kind='kde')
-        
-        elif diag_type == 'Kernel Density Estimation':
-            if off_diag_type == 'Scatter':
-                fig = sns.pairplot(data=iris_df.data, diag_kind='kde', kind='scatter', plot_kws={'alpha': 0.5})
-            elif off_diag_type == 'Histogram':
-                fig = sns.pairplot(data=iris_df.data, diag_kind='kde', kind='hist')
-            elif off_diag_type == 'Kernel Density Estimation':
-                fig = sns.pairplot(data=iris_df.data, diag_kind='kde', kind='kde')
+            fig, ax = plt.subplots()
 
-        if off_diag_type != 'Kernel Density Estimation':
-            if kde_overlay == 'Yes':
-                fig.map_lower(sns.kdeplot, levels=4, color='.2')
+            if diag_type == 'Histogram':
+                if off_diag_type == 'Scatter':
+                    fig = sns.pairplot(data=iris_df.data, diag_kind='hist', kind='scatter', plot_kws={'alpha': 0.5})
+                elif off_diag_type == 'Histogram':
+                    fig = sns.pairplot(data=iris_df.data, diag_kind='hist', kind='hist')
+                elif off_diag_type == 'Kernel Density Estimation':
+                    fig = sns.pairplot(data=iris_df.data, diag_kind='hist', kind='kde')
+            
+            elif diag_type == 'Kernel Density Estimation':
+                if off_diag_type == 'Scatter':
+                    fig = sns.pairplot(data=iris_df.data, diag_kind='kde', kind='scatter', plot_kws={'alpha': 0.5})
+                elif off_diag_type == 'Histogram':
+                    fig = sns.pairplot(data=iris_df.data, diag_kind='kde', kind='hist')
+                elif off_diag_type == 'Kernel Density Estimation':
+                    fig = sns.pairplot(data=iris_df.data, diag_kind='kde', kind='kde')
+
+            if off_diag_type != 'Kernel Density Estimation':
+                if kde_overlay == 'Yes':
+                    fig.map_lower(sns.kdeplot, levels=4, color='.2')
+            
+            fig.fig.suptitle('Distribution of pairs of iris features', y=1.05, fontsize=16)
+
+            return fig
         
-        fig.fig.suptitle('Distribution of pairs of iris features', y=1.05, fontsize=16)
+        pair_plot_fig = make_pairplot(iris_df, diag_type, off_diag_type, kde_overlay)
         
         with output_col:
 
-            st.pyplot(fig)
+            st.pyplot(pair_plot_fig)
 
     
     st.write(
@@ -467,6 +492,7 @@ def iris_example():
     # --------------------------------------------------------
     # ----- 2-D distribution plots by species code block -----
     # --------------------------------------------------------
+    run_button_key = 'iris_2D_by_species_run_button'
     st.subheader('Plotting options')
     code_options = st.beta_columns(3)
     with code_options[0]:
@@ -530,41 +556,48 @@ def iris_example():
                  
     with output_col:
         st.subheader('Output:')
-    run_button = st.button('Run Code', key='iris_2D_by_species_run_button')
-    if run_button:
+    run_button = st.button('Run Code', key=run_button_key, on_click=button_created(run_button_key))
+    if run_button or st.session_state[run_button_key+'_dict']['was_pressed']:
+        st.session_state[run_button_key+'_dict']['was_pressed'] = True
 
         iris_df = load_iris(as_frame=True)
         iris_df.data['species'] = iris_df.target.replace({0: 'setosa', 
                                                           1: 'versicolor', 
                                                           2: 'virginica'})
 
-        fig, ax = plt.subplots()
+        @st.cache(hash_funcs={mpl.figure.Figure: lambda _: None, sns.PairGrid: lambda _: None})
+        def make_pairplot_by_species(iris_df, diag_type, off_diag_type, kde_overlay):
+            fig, ax = plt.subplots()
 
-        if diag_type == 'Histogram':
-            if off_diag_type == 'Scatter':
-                fig = sns.pairplot(data=iris_df.data, hue='species', diag_kind='hist', kind='scatter', plot_kws={'alpha': 0.5})
-            elif off_diag_type == 'Histogram':
-                fig = sns.pairplot(data=iris_df.data, hue='species', diag_kind='hist', kind='hist')
-            elif off_diag_type == 'Kernel Density Estimation':
-                fig = sns.pairplot(data=iris_df.data, hue='species', diag_kind='hist', kind='kde')
-        
-        elif diag_type == 'Kernel Density Estimation':
-            if off_diag_type == 'Scatter':
-                fig = sns.pairplot(data=iris_df.data, hue='species', diag_kind='kde', kind='scatter', plot_kws={'alpha': 0.5})
-            elif off_diag_type == 'Histogram':
-                fig = sns.pairplot(data=iris_df.data, hue='species', diag_kind='kde', kind='hist')
-            elif off_diag_type == 'Kernel Density Estimation':
-                fig = sns.pairplot(data=iris_df.data, hue='species', diag_kind='kde', kind='kde')
+            if diag_type == 'Histogram':
+                if off_diag_type == 'Scatter':
+                    fig = sns.pairplot(data=iris_df.data, hue='species', diag_kind='hist', kind='scatter', plot_kws={'alpha': 0.5})
+                elif off_diag_type == 'Histogram':
+                    fig = sns.pairplot(data=iris_df.data, hue='species', diag_kind='hist', kind='hist')
+                elif off_diag_type == 'Kernel Density Estimation':
+                    fig = sns.pairplot(data=iris_df.data, hue='species', diag_kind='hist', kind='kde')
+            
+            elif diag_type == 'Kernel Density Estimation':
+                if off_diag_type == 'Scatter':
+                    fig = sns.pairplot(data=iris_df.data, hue='species', diag_kind='kde', kind='scatter', plot_kws={'alpha': 0.5})
+                elif off_diag_type == 'Histogram':
+                    fig = sns.pairplot(data=iris_df.data, hue='species', diag_kind='kde', kind='hist')
+                elif off_diag_type == 'Kernel Density Estimation':
+                    fig = sns.pairplot(data=iris_df.data, hue='species', diag_kind='kde', kind='kde')
 
-        if off_diag_type != 'Kernel Density Estimation':
-            if kde_overlay == 'Yes':
-                fig.map_lower(sns.kdeplot, levels=4, color='.2')
-        
-        fig.fig.suptitle('Distribution of pairs of iris features by species', y=1.05, fontsize=16)
+            if off_diag_type != 'Kernel Density Estimation':
+                if kde_overlay == 'Yes':
+                    fig.map_lower(sns.kdeplot, levels=4, color='.2')
+            
+            fig.fig.suptitle('Distribution of pairs of iris features by species', y=1.05, fontsize=16)
+
+            return fig
       
+        pair_plot_fig = make_pairplot_by_species(iris_df, diag_type, off_diag_type, kde_overlay)
+        
         with output_col:
 
-            st.pyplot(fig)
+            st.pyplot(pair_plot_fig)
 
 
 
@@ -577,6 +610,7 @@ def iris_example():
     # -------------------------------------------------
     # ----- Correlation matrix heatmap code block -----
     # -------------------------------------------------
+    run_button_key = 'iris_corr_heatmap_run_button'
     code_col, output_col = st.beta_columns(2)
     with code_col:
         st.subheader('Code:')
@@ -607,8 +641,9 @@ def iris_example():
         
     with output_col:
         st.subheader('Output:')
-    run_button = st.button('Run Code', key='iris_corr_heatmap_run_button')
-    if run_button:
+    run_button = st.button('Run Code', key=run_button_key, on_click=button_created(run_button_key))
+    if run_button or st.session_state[run_button_key+'_dict']['was_pressed']:
+        st.session_state[run_button_key+'_dict']['was_pressed'] = True
         
         iris_df = load_iris(as_frame=True)
 
@@ -699,6 +734,7 @@ def iris_example():
     # ------------------------------------------
     # ----- Classifier training code block -----
     # ------------------------------------------
+    run_button_key = 'iris_training_run_button'
     st.subheader('Code:')
     code_col, button_col = st.beta_columns([10,1])
     with code_col:
@@ -751,10 +787,13 @@ def iris_example():
                 '''
             )
     with button_col:
-        run_button = st.button('Run Code', key='iris_training_run_button')
+        run_button = st.button('Run Code', key=run_button_key, on_click=button_created(run_button_key))
     st.subheader('Output:')
     output_col1, output_col2 = st.beta_columns(2)
-    if run_button:   
+
+    if run_button or st.session_state[run_button_key+'_dict']['was_pressed']:
+        st.session_state[run_button_key+'_dict']['was_pressed'] = True
+
         iris_df = load_iris(as_frame=True)
         iris_df.target.replace({0: 'setosa', 1: 'versicolor', 2: 'virginica'}, inplace=True)
 
@@ -799,6 +838,7 @@ def iris_example():
     # -------------------------------------------------
     # ----- Custom classifier training code block -----
     # -------------------------------------------------
+    run_button_key = 'iris_custom_training_run_button'
     code_options = st.beta_columns(2)
     with code_options[0]:
         st.subheader('Proportion of training data:')
@@ -879,10 +919,11 @@ def iris_example():
                 '''
             )
     with button_col:
-        run_button = st.button('Run Code', key='iris_custom_training_run_button')
+        run_button = st.button('Run Code', key=run_button_key, on_click=button_created(run_button_key))
     st.subheader('Output:')
     output_col1, output_col2 = st.beta_columns(2)
-    if run_button:
+    if run_button or st.session_state[run_button_key+'_dict']['was_pressed']:
+        st.session_state[run_button_key+'_dict']['was_pressed'] = True
 
         iris_df = load_iris(as_frame=True)
         iris_df.target.replace({0: 'setosa', 1: 'versicolor', 2: 'virginica'}, inplace=True)
@@ -935,6 +976,7 @@ def iris_example():
     # -------------------------------------------------
     # ----- Hyperparameter grid search code block -----
     # -------------------------------------------------
+    run_button_key = 'iris_hyperparameter_tuning_run_button'
     st.subheader('Code:')
     code_col, button_col = st.beta_columns([10,1])
     with code_col:
@@ -1020,9 +1062,10 @@ def iris_example():
                 '''
             )
     with button_col:
-        run_button = st.button('Run Code', key='iris_hyperparameter_tuning_run_button')
+        run_button = st.button('Run Code', key=run_button_key, on_click=button_created(run_button_key))
     st.subheader('Output:')
-    if run_button:
+    if run_button or st.session_state[run_button_key+'_dict']['was_pressed']:
+        st.session_state[run_button_key+'_dict']['was_pressed'] = True
         
         iris_df = load_iris(as_frame=True)
         iris_df.target.replace({0: 'setosa', 1: 'versicolor', 2: 'virginica'}, inplace=True)

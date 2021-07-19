@@ -3,10 +3,10 @@ import streamlit as st
 # Import custom latex display and numbering class
 from latex_equation_numbering import latex_equation_numbering
 
-# Instantiate the latex_equation_numbering class
-math_equations = latex_equation_numbering()
-
 def app_page():
+
+    # Instantiate the latex_equation_numbering class
+    math_equations = latex_equation_numbering()
 
     # Make title
     st.title('The Mathematics of Naive-Bayes Classification')

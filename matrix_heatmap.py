@@ -1,8 +1,11 @@
+import streamlit as st
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 import seaborn as sns
 import numpy as np
 
+@st.cache(hash_funcs={mpl.figure.Figure: lambda _: None})
 def matrix_heatmap(matrix, options={'x_labels': [], 'y_labels': [], 'annotation_format': 'd', 'color_map': 'Blues', 'custom_range': True, 'vmin_vmax': (0,1), 'center': 0, 'title_axis_labels': ('Default Title', 'Default x-axis label', 'Default y-axis label'), 'rotate x_tick_labels': False}):
 
     # Create matrix figure

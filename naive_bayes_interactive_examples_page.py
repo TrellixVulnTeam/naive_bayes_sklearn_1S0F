@@ -4,6 +4,9 @@ import streamlit as st
 from sklearn_naive_bayes_iris_example import iris_example
 from sklearn_naive_bayes_20newsgroup_example import newsgroup_example
 
+# Load helpers
+from helpers import button_created, button_changed
+
 def app_page():
 
     # Make title
@@ -20,6 +23,10 @@ def app_page():
         '''
     )
 
+    # ------------------------------
+    # ----- Example code block -----
+    # ------------------------------
+    run_button_key = 'example_run_button'
     code_col, output_col = st.beta_columns(2)
     with code_col:
         st.subheader('Code:')
@@ -33,8 +40,12 @@ def app_page():
         )
     with output_col:
         st.subheader('Output:')
-    run_button = st.button('Run Code', key='example_run_button')
-    if run_button:
+    run_button = st.button('Run Code', key=run_button_key, on_click=button_created(run_button_key))
+    
+
+
+    if run_button or st.session_state[run_button_key+'_dict']['was_pressed']:
+        st.session_state[run_button_key+'_dict']['was_pressed'] = True
         with output_col:
             st.text('Press the "Run Code" button to print this message to the right.')
     
@@ -44,6 +55,10 @@ def app_page():
         '''
     )
 
+    # ----------------------------------------
+    # ----- Expanding example code block -----
+    # ----------------------------------------
+    run_button_key = 'expanding_example_run_button'
     st.subheader('Code:')
     code_col, button_col = st.beta_columns([10,1])
     with code_col:
@@ -58,9 +73,10 @@ def app_page():
                 '''
             )
     with button_col:
-        run_button = st.button('Run Code', key='expanding_example_run_button')
+        run_button = st.button('Run Code', key=run_button_key, on_click=button_created(run_button_key))
     st.subheader('Output:')
-    if run_button:
+    if run_button or st.session_state[run_button_key+'_dict']['was_pressed']:
+        st.session_state[run_button_key+'_dict']['was_pressed'] = True
         st.text('Press the "Run Code" button to print this message below.')
     st.subheader('')
 

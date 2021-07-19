@@ -1,6 +1,10 @@
 # naive_bayes_sklearn
 Interactive Streamlit app exploring Naive-Bayes classification with sklearn
 
+**New features:**
+
+  >Internally, Streamlit reruns the python script from the top whenever the user interacts with any widget. This means that once the reader clicks a `Run Code` button, any previous output is erased as the app is refreshed. This update implements the new `session_state` feature, which can preserve information across reruns of the app. This allows output to be preserved, and not cleared as a reader advances along in the app. This preservation of output requires the rerunning of internal processes, and we have made heavy use of the caching `@st.cache` function decorator to store outputs of functions once they are computed, allowing large speed-ups in performance.
+
 Find the app deployed on heroku at
 [http://naive-bayes-sklearn.herokuapp.com/](http://naive-bayes-sklearn.herokuapp.com/).
 (App may take up a few moments to load)

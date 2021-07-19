@@ -8,6 +8,21 @@ class latex_equation_numbering():
         self.display_number_style = display_inline_number_style[0]
         self.inline_number_style = display_inline_number_style[1]
     
+    # Method for resetting the equation dictionary
+    def reset_equation_dict(self):
+        self.equation_dict = {}
+        self.counter = 1
+    
+    # Method for getting the equation dictionary
+    def get_equation_dict(self):
+
+        return self.equation_dict
+    
+    # Method for getting the counter
+    def get_counter(self):
+
+        return self.counter
+    
     # Method for adding new display equations to the dictionary, with a choice of displaying an equation number for future reference
     def add_equation(self, label, equation, numbered=True):
         # Add an item to the equation_dict
