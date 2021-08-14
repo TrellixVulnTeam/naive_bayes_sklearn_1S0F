@@ -1,4 +1,4 @@
-# naive_bayes_sklearn
+# An Interactive and Educational Streamlit Webapp
 Interactive Streamlit app exploring Naive-Bayes classification with sklearn
 
 **New features:**
